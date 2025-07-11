@@ -19,8 +19,8 @@ struct Home: View {
             HeaderView()
                 .environment(\.colorScheme, .dark)
             
-            GeometryReader {_ in 
-//                let size = $0.size
+            GeometryReader {
+                let size = $0.size
                 
             }
             .background(.background)
