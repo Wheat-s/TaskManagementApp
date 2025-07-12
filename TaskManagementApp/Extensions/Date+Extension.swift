@@ -11,27 +11,22 @@ import SwiftUI
 
 extension Date {
     /// 获取当前周的 7 天日期（从周一或周日开始，取决于系统设置）
-    static var currentWeek: [Date] {
+    static var currentWeek: [Day] {
         // 使用以周一为第一天的日历（中国习惯）
-        var calendar = Calendar.current
-        calendar.firstWeekday = 2 // 周一 = 2，周日 = 1
-        
-        let now = Date()  // 当前日期
+        let calendar = Calendar.current
  
         // 获取本周的起始日期（周日或周一，取决于系统）
         // 获取本周的范围（从周一开始）
-        guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: now),
-              let firstWeekDay = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: now))
-        else {
+        guard let firstWeekDay = calendar.dateInterval(of: .weekOfMonth, for: .now)?.start else {
             return []
         }
 
-        var week: [Date] = [] // 一周日期
+        var week: [Day] = [] // 一周日期
 
         // 从本周第一天开始，依次加 0~6 天，生成整周日期
         for index in 0..<7 {
             if let day = calendar.date(byAdding: .day, value: index, to: firstWeekDay) {
-                week.append(day)
+                week.append(.init(date: day))
             }
         }
 
@@ -51,5 +46,12 @@ extension Date {
             return false
         }
         return Calendar.current.isDate(self, inSameDayAs: date)
+    }
+    
+    struct Day: Identifiable {
+        var id: String = UUID().uuidString
+        var date: Date
+        /// Other additional Properties as per your needs!
+        
     }
 }
